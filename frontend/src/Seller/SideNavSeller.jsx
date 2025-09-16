@@ -37,6 +37,14 @@ function SideNavSeller() {
       >
         AddYoga
       </NavLink>
+                  <NavLink 
+        to="/AddSublement" 
+        className={({ isActive }) => 
+          `p-2 rounded-lg hover:bg-gray-700 ${isActive ? "bg-gray-700 font-bold" : ""}`
+        }
+      >
+        sublements
+      </NavLink>
     </div>
   );
 }

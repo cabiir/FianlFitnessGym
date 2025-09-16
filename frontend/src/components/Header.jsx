@@ -1,24 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useUser } from "../contexts/UserContext"; // ✅ Import context
+import { useUser } from "../contexts/UserContext";
+import { ShoppingCart } from "lucide-react";
 
-function Header() {
+function Header({ cartCount = 0 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, logout } = useUser(); // ✅ Change to use the correct function name
+  const { user, logout } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleLogout = () => {
-    logout(); // ✅ Use the correct function name from context
-    navigate("/"); // send back to home
+    logout();
+    navigate("/");
   };
 
   return (
@@ -30,7 +29,7 @@ function Header() {
       {/* Logo */}
       <Link
         to="/"
-        className="font-bold font-serif italic text-xl md:text-2xl text-primaryDarkGreen "
+        className="font-bold font-serif italic text-xl md:text-2xl text-primaryDarkGreen"
       >
         Fitness
       </Link>
@@ -103,11 +102,32 @@ function Header() {
               Contact
             </Link>
           </li>
+          <li>
+            <Link
+              to="/sublements"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-primaryDarkGreen text-lg md:text-xl hover:text-primaryDarkGreen2 transition-colors duration-300"
+            >
+              Sublements
+            </Link>
+          </li>
         </ul>
       </nav>
 
-      {/* Right Side: Auth Buttons */}
+      {/* Right Side: Auth Buttons + Cart */}
       <div className="hidden md:flex gap-4 items-center">
+        {/* Shopping Cart always visible */}
+        <div className="relative">
+          <Link to="/cart">
+            <ShoppingCart className="text-primaryDarkGreen" size={24} />
+          </Link>
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </div>
+
         {user ? (
           <>
             <span className="text-primaryDarkGreen font-semibold">Hi, {user.name}</span>
@@ -119,14 +139,11 @@ function Header() {
             </button>
           </>
         ) : (
-          <>
-            <Link to="/login">
-              <button className="bg-primaryDarkGreen text-secondaryBeige px-6 md:px-8 py-2 rounded-full hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
-                Login
-              </button>
-            </Link>
-
-          </>
+          <Link to="/login">
+            <button className="bg-primaryDarkGreen text-secondaryBeige px-6 md:px-8 py-2 rounded-full hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
+              Login
+            </button>
+          </Link>
         )}
       </div>
     </header>

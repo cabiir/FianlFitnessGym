@@ -15,9 +15,17 @@ import SellerUsersDisplay from "./Seller/SellerUsersDisplay";
 import AdminDashboard from "./Seller/AdminDashboard";
 import Yoga from "./pages/Yoga";
 import AddYoga from "./components/AddYoga";
+import Sublements from "./pages/Sublements";
+import Cart from "./pages/Cart";
+import { CartProvider } from "./contexts/CartContext";
+import AddSublements from "./components/AddSublements";
+import { SupplementsProvider } from "./contexts/SupplementsContext";
+import LoginAdmin from "./Seller/LoginAdmin";
 
 function App() {
   return (
+    <SupplementsProvider>
+    <CartProvider>
      <ProgramsProvider>
     <UserProvider>
       <Routes>
@@ -32,14 +40,17 @@ function App() {
         <Route path="/Nav" element={<SideNav />} />
         <Route path="/seller" element={<SellerDash />} />
         <Route path="/sellerUserDisplay" element={<SellerUsersDisplay />} />
-        {/* <Route path="/Adimin" element={<AdminDashboard />} /> */}
+        <Route path="/cart" element={<Cart />} />
         <Route path="/yoga" element={<Yoga />} />
         <Route path="/addyoga" element={<AddYoga />} />
+        <Route path="/sublements" element={<Sublements />} />
+        <Route path="/AddSublement" element={<AddSublements />} />
+        <Route path="/Admin" element={<LoginAdmin />} />
       </Routes>
     </UserProvider>
-       
-
     </ProgramsProvider>
+    </CartProvider>
+    </SupplementsProvider>
   );
 }
 

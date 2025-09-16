@@ -98,6 +98,7 @@ function Trail() {
                   alt={program.title}
                   className="w-full h-56 object-cover transform transition-transform duration-700 hover:scale-110"
                 />
+                
                 <div className="absolute top-4 right-4 bg-primaryDarkGreen text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {program.category.charAt(0).toUpperCase() + program.category.slice(1)}
                 </div>
