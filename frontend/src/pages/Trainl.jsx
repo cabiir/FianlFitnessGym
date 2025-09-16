@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useUser } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import { usePrograms } from "../contexts/ProgramsContext";
+import { useNavigate, Link } from "react-router-dom";
+import Footer from "../components/Footer";
 
 function Trail() {
   const { addProgram } = useUser() || {};
+  const { programs } = usePrograms();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -14,42 +17,12 @@ function Trail() {
     setIsVisible(true);
   }, []);
 
-  const trailPrograms = [
-    {
-      id: 1,
-      title: "Beginner's Foundation",
-      category: "beginner",
-      duration: "4 weeks",
-      intensity: "Low",
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
-      description: "Build a solid fitness foundation with guided exercises perfect for starters."
-    },
-    {
-      id: 2,
-      title: "Strength Builder",
-      category: "intermediate",
-      duration: "6 weeks",
-      intensity: "Medium",
-      image: "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1631&q=80",
-      description: "Increase your power and muscle definition with our structured strength program."
-    },
-    {
-      id: 3,
-      title: "Endurance Master",
-      category: "advanced",
-      duration: "8 weeks",
-      intensity: "High",
-      image: "https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1169&q=80",
-      description: "Push your limits and build exceptional cardiovascular endurance."
-    }
-  ];
-
   const categories = ["all", "beginner", "intermediate", "advanced"];
 
   const filteredPrograms =
     activeCategory === "all"
-      ? trailPrograms
-      : trailPrograms.filter((p) => p.category === activeCategory);
+      ? programs
+      : programs.filter((p) => p.category === activeCategory);
 
   const handleStartTrail = (program) => {
     addProgram?.(program);
@@ -138,6 +111,10 @@ function Trail() {
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{program.title}</h3>
                 <p className="text-gray-600 mb-4">{program.description}</p>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-sm text-gray-500">{program.duration}</span>
+                  <span className="text-sm text-gray-500">{program.intensity} Intensity</span>
+                </div>
                 <div className="flex justify-between items-center">
                   <button
                     onClick={() => handleStartTrail(program)}
@@ -161,26 +138,14 @@ function Trail() {
             <div className="text-center py-16 animate-fade-in">
               <div className="text-5xl mb-4">😢</div>
               <h3 className="text-2xl font-bold text-gray-800 mb-2">No programs found</h3>
-              <p className="text-gray-600">Try another filter or check back later!</p>
+              <p className="text-gray-600 mb-4">Try another filter or check back later!</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 bg-primaryDarkGreen text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Can't Find What You're Looking For?
-          </h2>
-          <p className="text-xl opacity-90 mb-8">
-            Our fitness experts can create a completely personalized trail for your goals.
-          </p>
-          <button className="bg-white text-primaryDarkGreen font-semibold py-3 px-8 rounded-xl transform transition-transform hover:scale-105 duration-300">
-            Request Custom Trail
-          </button>
-        </div>
-      </section>
+      <Footer />
+
     </div>
   );
 }

@@ -61,12 +61,17 @@ function Home() {
           </p>
           <br />
           <div className="flex flex-col sm:flex-row gap-5 mt-4">
-            <button className="bg-primaryDarkGreen text-secondaryBeige px-6 py-2 rounded-full hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
-              Join Member
+          <Link to="/signIn">
+            <button className="bg-primaryDarkGreen text-secondaryBeige px-8 py-3 rounded-full text-lg font-medium hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
+              Get Started
             </button>
-            <button className="bg-secondaryBeige text-primaryDarkGreen border-2 border-primaryDarkGreen px-6 py-2 rounded-full hover:bg-white transition-colors duration-300 transform hover:scale-105">
-              Start for free
+          </Link>
+          <Link to="/trainers">
+            <button className="bg-secondaryBeige text-primaryDarkGreen px-8 py-3 border-2 bodder-black rounded-full text-lg font-medium hover:bg-white transition-colors duration-300 transform hover:scale-105">
+              Our Trainers
             </button>
+          </Link>
+
           </div>
         </div>
 
@@ -103,11 +108,7 @@ function Home() {
         </p>
       </div>
 
-      <div className="px-5 md:px-12 py-10 text-center max-w-3xl mx-auto">
-        <button className="bg-primaryDarkGreen text-secondaryBeige px-8 py-3 rounded-full text-lg font-medium hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
-          Join Member
-        </button>
-      </div>
+
 
       {/* Our Services Section */}
       <div 
@@ -123,7 +124,7 @@ function Home() {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Yoga Classes Card */}
           <div className="p-6 md:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
             <div className="mb-6 bg-[#F1F8F5] w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto md:mx-0">
@@ -137,7 +138,7 @@ function Home() {
             <p className="text-gray-600 mb-6 text-center md:text-left">
               Classes for all levels, from beginners to advanced. Enjoy various styles like Huma, Vinyssa, and Yin Yoga.
             </p>
-            <a href="#" className="text-primaryDarkGreen font-semibold hover:underline inline-flex items-center justify-center md:justify-start">
+            <a href="/yoga" className="text-primaryDarkGreen font-semibold hover:underline inline-flex items-center justify-center md:justify-start">
               View more 
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -158,28 +159,7 @@ function Home() {
             <p className="text-gray-600 mb-6 text-center md:text-left">
               Our expert training offer customized workload and ongoing support for weight loss, muscle building, and improved health.
             </p>
-            <a href="#" className="text-primaryDarkGreen font-semibold hover:underline inline-flex items-center justify-center md:justify-start">
-              View more 
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </a>
-          </div>
-          
-          {/* Wellness Workshops Card */}
-          <div className="p-6 md:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
-            <div className="mb-6 bg-[#F1F8F5] w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto md:mx-0">
-              <img 
-                src="https://framerusercontent.com/images/dQnNdr2bM21fcfp747MJG4WRL8M.svg" 
-                alt="Wellness Icon" 
-                className="h-6 w-6 md:h-8 md:w-8"
-              />
-            </div>
-            <h3 className="text-xl md:text-2xl font-semibold mb-4 text-center md:text-left">Wellness Workshops</h3>
-            <p className="text-gray-600 mb-6 text-center md:text-left">
-              Work alongside mindfulness, stress management, and holistic health. Often valuable insights and practical tools to enhance your physical and mental well-being.
-            </p>
-            <a href="#" className="text-primaryDarkGreen font-semibold hover:underline inline-flex items-center justify-center md:justify-start">
+            <a href="/trainers" className="text-primaryDarkGreen font-semibold hover:underline inline-flex items-center justify-center md:justify-start">
               View more 
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -188,12 +168,6 @@ function Home() {
           </div>
         </div>
         
-        {/* Explore the services section */}
-        <div className="text-center mt-12 md:mt-16">
-          <button className="bg-primaryDarkGreen text-secondaryBeige px-8 py-3 rounded-full text-lg font-medium hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
-            Explore More
-          </button>
-        </div>
       </div>
 
 

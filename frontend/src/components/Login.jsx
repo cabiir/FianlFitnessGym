@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
+import { useUser } from '../contexts/UserContext';
 
 function Login() {
+  const { loginUser } = useUser();
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -10,6 +12,7 @@ function Login() {
   });
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,17 +25,30 @@ function Login() {
       ...prev,
       [name]: value
     }));
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
-    // Simulate login process
-    setTimeout(() => {
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const success = loginUser({ email: formData.email, password: formData.password });
+      
+      if (success) {
+        navigate('/dashboard');
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    } finally {
       setIsLoading(false);
-      navigate('/'); // Redirect to dashboard after successful login
-    }, 2000);
+    }
   };
 
   const socialLogins = [
@@ -46,7 +62,7 @@ function Login() {
       <div>
         <Header />
       </div>
-      <div className="min-h-screen mt-32 bg-gradient-to-br from-gra-50 to-blue-50 flex items-center justify-center px-4 py-8">
+      <div className="min-h-screen mt-32 bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center px-4 py-8">
         <div className={`max-w-6xl mx-auto w-full transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Illustration/Image */}
@@ -80,6 +96,13 @@ function Login() {
                   <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
                   <p className="text-gray-600">Sign in to continue your wellness journey</p>
                 </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4">
+                    {error}
+                  </div>
+                )}
 
                 {/* Social Login Buttons */}
                 <div className="mb-8">
@@ -177,7 +200,7 @@ function Login() {
                 <div className="text-center mt-8">
                   <p className="text-gray-600">
                     Don't have an account?{' '}
-                    <Link to="/signup" className="text-primaryDarkGreen font-semibold hover:text-primaryDarkGreen2 transition-colors duration-300">
+                    <Link to="/signIn" className="text-primaryDarkGreen font-semibold hover:text-primaryDarkGreen2 transition-colors duration-300">
                       Sign up
                     </Link>
                   </p>
@@ -189,7 +212,7 @@ function Login() {
                   <p className="text-xs text-gray-600">
                     Join our community and get access to personalized workouts, nutrition plans, and wellness tracking.
                   </p>
-                  <Link to="/signup" className="inline-block mt-3 text-xs text-primaryDarkGreen font-semibold hover:underline">
+                  <Link to="/signIn" className="inline-block mt-3 text-xs text-primaryDarkGreen font-semibold hover:underline">
                     Learn more →
                   </Link>
                 </div>

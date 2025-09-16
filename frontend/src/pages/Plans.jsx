@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from "../components/Header";
+import Footer from '../components/Footer';
 
 function Plan() {
   const [isVisible, setIsVisible] = useState(false);
@@ -212,24 +213,9 @@ function Plan() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-primaryDarkGreen text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Still Have Questions?</h2>
-          <p className="text-xl opacity-90 mb-8">
-            Our team is here to help you choose the right plan for your fitness journey.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="bg-white text-primaryDarkGreen font-semibold py-3 px-8 rounded-xl transform transition-transform hover:scale-105 duration-300">
-              Contact Support
-            </button>
-            <button className="bg-transparent border-2 border-white text-white font-semibold py-3 px-8 rounded-xl transform transition-transform hover:scale-105 duration-300">
-              Start Free Trial
-            </button>
-          </div>
-        </div>
-      </section>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -178,12 +178,6 @@ function Reviews() {
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <button className="bg-primaryDarkGreen text-secondaryBeige px-8 py-3 rounded-full text-lg font-medium hover:bg-primaryDarkGreen2 transition-colors duration-300 transform hover:scale-105">
-            View All Reviews
-          </button>
-        </div>
       </div>
     </section>
   );

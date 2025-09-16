@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from "../components/Header";
+import Footer from '../components/Footer';
 
 function About() {
   const [isVisible, setIsVisible] = useState(false);
@@ -192,15 +193,12 @@ function About() {
               </div>
             ))}
           </div>
-          
-          <div className="mt-16 text-center animate-fade-in">
-            <h3 className="text-2xl font-bold mb-6">Ready to Begin Your Fitness Journey?</h3>
-            <button className="bg-white text-primaryDarkGreen font-semibold py-3 px-8 rounded-xl transform transition-transform hover:scale-105 duration-300">
-              Join Our Community Today
-            </button>
-          </div>
+        
         </div>
       </section>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }

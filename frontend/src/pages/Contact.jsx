@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from "../components/Header";
+import Footer from '../components/Footer';
 
 function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -303,6 +304,10 @@ function Contact() {
           </div>
         </div>
       </section>
+      <div>
+        <Footer
+        />
+      </div>
     </div>
   );
 }

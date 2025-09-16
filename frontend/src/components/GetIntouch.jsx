@@ -33,7 +33,7 @@ function GetInTouch() {
   };
 
   return (
-    <section className={`px-5 md:px-8 lg:px-12 py-16 md:py-20 border-2 border-gray-50 rounded-3xl bg-gradient-to-br from-gra-50 to-blue-50 transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`px-5 md:px-8 lg:px-12 py-16 md:py-20   transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 md:gap-16">
           {/* Text Content */}

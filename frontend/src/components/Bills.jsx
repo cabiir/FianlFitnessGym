@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 function Bills() {
   const [isVisible, setIsVisible] = useState(false);
@@ -79,7 +80,7 @@ function Bills() {
   ];
 
   return (
-    <section className={`px-5 md:px-8 lg:px-12 py-16 md:py-20 border-2 border-gray-50 rounded-3xl bg-gra-50 transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`px-5 md:px-8 lg:px-12 py-16 md:py-20  transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12 md:mb-16">
@@ -168,9 +169,9 @@ function Bills() {
           <p className="text-gray-600 mb-6">
             All plans include access to our community events and support groups.
           </p>
-          <button className="bg-primaryDarkGreen text-white px-8 py-3 rounded-full font-semibold hover:bg-primaryDarkGreen2 transition-all duration-300 transform hover:scale-105">
+          <Link to="/plans">          <button className="bg-primaryDarkGreen text-white px-8 py-3 rounded-full font-semibold hover:bg-primaryDarkGreen2 transition-all duration-300 transform hover:scale-105">
             View Detailed Comparison
-          </button>
+          </button></Link>
         </div>
       </div>
     </section>

@@ -4,9 +4,7 @@ import Header from "./Header";
 import { useUser } from "../contexts/UserContext";
 
 function SignUp() {
-  const userCtx = useUser();
-  const setUser = userCtx?.setUser || (() => {});
-
+  const { registerUser, users } = useUser();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,16 +25,28 @@ function SignUp() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First name required";
+    
+    if (!formData.firstName.trim()) newErrors.firstName = "First name required";
     if (!formData.email.includes("@")) newErrors.email = "Valid email required";
+    
+    // Check if email already exists
+    if (users.some(user => user.email === formData.email)) {
+      newErrors.email = "Email already registered";
+    }
+    
     if (formData.password.length < 6) newErrors.password = "Min 6 chars";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords must match";
     if (!agreeToTerms) newErrors.agree = "Agree to terms required";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -46,25 +56,34 @@ function SignUp() {
     if (!validate()) return;
 
     setIsLoading(true);
-    setUser({
+
+    // Register the user
+    const userData = {
       name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,
-    });
+      password: formData.password
+    };
 
-    setTimeout(() => {
+    const success = registerUser(userData);
+    
+    if (success) {
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate("/dashboard");
+      }, 1000);
+    } else {
+      setErrors({ email: "Email already registered" });
       setIsLoading(false);
-      navigate("/dashboard");
-    }, 1000);
+    }
   };
 
   return (
     <>
       <Header />
-      <div className="min-h-screen mt-32 bg-gradient-to-br from-gry-50 to-blue-50 flex items-center justify-center px-4 py-8">
+      <div className="min-h-screen mt-32 bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center px-4 py-8">
         <div className={`max-w-6xl mx-auto w-full transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Side - Illustration */}
+            {/* Left Side Illustration */}
             <div className="hidden lg:block animate-slide-in-left">
               <div className="relative">
                 <img
@@ -79,10 +98,9 @@ function SignUp() {
               </div>
             </div>
 
-            {/* Right Side - Signup Form */}
+            {/* Right Side Signup Form */}
             <div className="animate-slide-in-right">
               <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10 max-w-md mx-auto">
-                {/* Header */}
                 <div className="text-center mb-8">
                   <Link to="/" className="inline-block mb-6">
                     <span className="text-3xl font-bold font-serif text-primaryDarkGreen">
@@ -95,72 +113,84 @@ function SignUp() {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      name="firstName"
-                      placeholder="First name"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
-                    />
-                    <input
-                      type="text"
-                      name="lastName"
-                      placeholder="Last name"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
-                    />
+                    <div>
+                      <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First name"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
+                      />
+                      {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last name"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
+                      />
+                    </div>
                   </div>
-                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
 
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
-                  />
-                  {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
-                  />
-                  {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
-                  />
-                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-
-                  <label className="flex items-center">
+                  <div>
                     <input
-                      type="checkbox"
-                      checked={agreeToTerms}
-                      onChange={(e) => setAgreeToTerms(e.target.checked)}
-                      className="h-4 w-4 text-primaryDarkGreen border-gray-300 rounded"
+                      type="email"
+                      name="email"
+                      placeholder="Email address"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
                     />
-                    <span className="ml-2 text-sm text-gray-600">I agree to the terms</span>
-                  </label>
-                  {errors.agree && <p className="text-red-500 text-sm">{errors.agree}</p>}
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                  </div>
+
+                  <div>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
+                    />
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                  </div>
+
+                  <div>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="Confirm password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryDarkGreen"
+                    />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+                  </div>
+
+                  <div>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={agreeToTerms}
+                        onChange={(e) => setAgreeToTerms(e.target.checked)}
+                        className="h-4 w-4 text-primaryDarkGreen border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-600">I agree to the terms</span>
+                    </label>
+                    {errors.agree && <p className="text-red-500 text-sm mt-1">{errors.agree}</p>}
+                  </div>
 
                   <button
                     type="submit"
                     disabled={isLoading}
                     className={`w-full py-4 px-6 bg-primaryDarkGreen text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${isLoading ? "animate-pulse" : ""}`}
                   >
-                    {isLoading ? "Creating..." : "Create Account"}
+                    {isLoading ? "Creating Account..." : "Create Account"}
                   </button>
                 </form>
 
@@ -171,16 +201,6 @@ function SignUp() {
                       Sign in
                     </Link>
                   </p>
-                </div>
-
-                <div className="mt-8 p-4 bg-gray-50 rounded-xl animate-fade-in-scale">
-                  <h3 className="text-sm font-semibold text-gray-800 mb-2">Why join FitnessTM?</h3>
-                  <p className="text-xs text-gray-600">
-                    Access personalized workouts, nutrition plans, and wellness tracking tailored just for you.
-                  </p>
-                  <Link to="/plans" className="inline-block mt-3 text-xs text-primaryDarkGreen font-semibold hover:underline">
-                    Explore plans →
-                  </Link>
                 </div>
               </div>
             </div>
