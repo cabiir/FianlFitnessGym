@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 function GetInTouch() {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,20 +21,25 @@ function GetInTouch() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert('Message sent successfully!');
+
+    try {
+      // simulate backend call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      toast.success("Message sent successfully!");
       setFormData({ email: '', message: '' });
-    }, 2000);
+    } catch (err) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section className={`px-5 md:px-8 lg:px-12 py-16 md:py-20   transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <section className={`px-5 md:px-8 lg:px-12 py-16 md:py-20 transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 md:gap-16">
           {/* Text Content */}
@@ -44,7 +50,7 @@ function GetInTouch() {
             <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed animate-float-up" style={{ animationDelay: '0.2s' }}>
               I want to help you overcome all mental and physical hurdles in your everyday life. 6 Years ago, I was electrocuted with 277 volts.
             </p>
-            
+
             {/* Story Section */}
             <div className="bg-white p-6 rounded-2xl shadow-lg animate-float-up" style={{ animationDelay: '0.4s' }}>
               <h3 className="text-xl font-semibold text-primaryDarkGreen mb-4">My Journey</h3>
@@ -98,9 +104,26 @@ function GetInTouch() {
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 
+                        3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Sending...
                   </span>
@@ -109,21 +132,12 @@ function GetInTouch() {
                 )}
               </button>
             </form>
-
-            {/* Additional Contact Info */}
-
-          </div>
-        </div>
-
-        {/* Success Message (hidden by default) */}
-        <div className="mt-12 text-center animate-float-up" style={{ animationDelay: '1s' }}>
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-6 inline-block">
-            <p className="text-green-800 font-medium">
-              Thank you for your message! I'll get back to you within 24 hours.
-            </p>
           </div>
         </div>
       </div>
+
+      {/* Toaster must be added once in your app */}
+      <Toaster position="top-center" reverseOrder={false} />
     </section>
   );
 }

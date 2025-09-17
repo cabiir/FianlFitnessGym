@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SideNavSeller from "../Seller/SideNavSeller";
 import { useSupplements } from "../contexts/SupplementsContext";
+import { toast } from "react-hot-toast";
 
 function AddSublements() {
   const { supplements, setSupplements } = useSupplements();
@@ -33,6 +34,7 @@ function AddSublements() {
             : supp
         )
       );
+      toast.success(`${formData.name} updated successfully!`);
       setIsEditing(false);
     } else {
       setSupplements([
@@ -44,6 +46,7 @@ function AddSublements() {
           rating: parseFloat(formData.rating) || 0,
         },
       ]);
+      toast.success(`${formData.name} added successfully!`);
     }
     setFormData({
       id: null,
@@ -60,11 +63,14 @@ function AddSublements() {
   const handleEdit = (supplement) => {
     setIsEditing(true);
     setFormData(supplement);
+    toast(`Editing ${supplement.name}`, { icon: "✏️" });
   };
 
   // Delete
   const handleDelete = (id) => {
+    const supp = supplements.find((s) => s.id === id);
     setSupplements(supplements.filter((supp) => supp.id !== id));
+    toast.error(`${supp?.name || "Supplement"} deleted`);
   };
 
   return (

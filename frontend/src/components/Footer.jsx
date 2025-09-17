@@ -24,17 +24,14 @@ function Footer() {
 
   const quickLinks = [
     { name: 'About Us', url: '/about' },
-    { name: 'Trainers', url: '/trainers' },
-    { name: 'Blog', url: '/blog' },
+    { name: 'Trainers', url: '/trainers' },,
     { name: 'Plans', url: '/plans' },
     { name: 'Contact', url: '/contact' }
   ];
 
   const services = [
-    { name: 'Yoga Classes', url: '/services/yoga' },
-    { name: 'Fitness Training', url: '/services/fitness' },
-    { name: 'Wellness Workshops', url: '/services/wellness' },
-    { name: 'Personal Coaching', url: '/services/coaching' }
+    { name: 'Yoga Classes', url: '/yoga' },
+    { name: 'Fitness Training', url: '/trainers' },
   ];
 
   return (

@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useUser } from "../contexts/UserContext";
 import { usePrograms } from "../contexts/ProgramsContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 function Yoga() {
   const { addProgram } = useUser() || {};
@@ -28,8 +29,10 @@ function Yoga() {
   }, []);
 
   // Filter yoga programs only
-  const yogaPrograms = programs.filter(program => 
-    program.category && ["beginner", "intermediate", "advanced"].includes(program.category)
+  const yogaPrograms = programs.filter(
+    (program) =>
+      program.category &&
+      ["beginner", "intermediate", "advanced"].includes(program.category)
   );
 
   const categories = ["all", "beginner", "intermediate", "advanced"];
@@ -42,7 +45,7 @@ function Yoga() {
   const handleStartYoga = (program) => {
     addProgram?.(program);
     setSelectedPrograms((prev) => [...prev, program.id]);
-    alert(`${program.title} has been added to your dashboard!`);
+    toast.success(`${program.title} has been added to your dashboard!`);
   };
 
   const handleGoToDashboard = () => navigate("/dashboard");
@@ -51,8 +54,8 @@ function Yoga() {
     e.preventDefault();
     const programWithId = {
       ...newProgram,
-      id: Date.now(), // Generate unique ID
-      type: "yoga" // Add type to identify as yoga program
+      id: Date.now(), // unique ID
+      type: "yoga" // tag as yoga
     };
     addYogaProgram(programWithId);
     setNewProgram({
@@ -64,17 +67,18 @@ function Yoga() {
       description: ""
     });
     setShowAddForm(false);
-    alert("Yoga program added successfully!");
+    toast.success("Yoga program added successfully!");
   };
 
   const handleDeleteProgram = (programId) => {
     deleteProgram(programId);
     setShowDeleteConfirm(null);
+    toast.success("Yoga program deleted.");
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewProgram(prev => ({
+    setNewProgram((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -88,9 +92,12 @@ function Yoga() {
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 max-w-md mx-4">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Delete Program</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">
+              Delete Program
+            </h3>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this yoga program? This action cannot be undone.
+              Are you sure you want to delete this yoga program? This action
+              cannot be undone.
             </p>
             <div className="flex justify-end space-x-4">
               <button
@@ -114,10 +121,15 @@ function Yoga() {
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Add New Yoga Program</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">
+              Add New Yoga Program
+            </h3>
             <form onSubmit={handleAddProgram} className="space-y-4">
+              {/* Title */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Title
+                </label>
                 <input
                   type="text"
                   name="title"
@@ -127,8 +139,11 @@ function Yoga() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primaryDarkGreen focus:border-transparent"
                 />
               </div>
+              {/* Category */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category
+                </label>
                 <select
                   name="category"
                   value={newProgram.category}
@@ -140,8 +155,11 @@ function Yoga() {
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
+              {/* Duration */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Duration
+                </label>
                 <input
                   type="text"
                   name="duration"
@@ -152,8 +170,11 @@ function Yoga() {
                   placeholder="e.g., 30 mins"
                 />
               </div>
+              {/* Intensity */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Intensity</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Intensity
+                </label>
                 <select
                   name="intensity"
                   value={newProgram.intensity}
@@ -166,8 +187,11 @@ function Yoga() {
                   <option value="High Intensity">High Intensity</option>
                 </select>
               </div>
+              {/* Image */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Image URL
+                </label>
                 <input
                   type="url"
                   name="image"
@@ -178,8 +202,11 @@ function Yoga() {
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
+              {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
                 <textarea
                   name="description"
                   value={newProgram.description}
@@ -220,10 +247,9 @@ function Yoga() {
             Yoga Practices
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10 animate-fade-in">
-            Discover yoga practices for all levels - from gentle stretching to challenging flows
+            Discover yoga practices for all levels - from gentle stretching to
+            challenging flows
           </p>
-
-          {/* Add Program Button */}
 
           {selectedPrograms.length > 0 && (
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-6 animate-fade-in">
@@ -267,8 +293,6 @@ function Yoga() {
               className="bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-transform hover:-translate-y-2 duration-500 animate-fade-in relative"
               style={{ animationDelay: `${idx * 0.1}s` }}
             >
-
-
               <div className="relative">
                 <img
                   src={program.image}
@@ -276,7 +300,8 @@ function Yoga() {
                   className="w-full h-56 object-cover transform transition-transform duration-700 hover:scale-110"
                 />
                 <div className="absolute top-4 right-4 bg-primaryDarkGreen text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {program.category.charAt(0).toUpperCase() + program.category.slice(1)}
+                  {program.category.charAt(0).toUpperCase() +
+                    program.category.slice(1)}
                 </div>
                 {selectedPrograms.includes(program.id) && (
                   <div className="absolute top-4 left-12 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -286,11 +311,17 @@ function Yoga() {
               </div>
 
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{program.title}</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {program.title}
+                </h3>
                 <p className="text-gray-600 mb-4">{program.description}</p>
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm text-gray-500">{program.duration}</span>
-                  <span className="text-sm text-gray-500">{program.intensity}</span>
+                  <span className="text-sm text-gray-500">
+                    {program.duration}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {program.intensity}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <button
@@ -314,14 +345,21 @@ function Yoga() {
           {filteredPrograms.length === 0 && (
             <div className="text-center py-16 animate-fade-in col-span-full">
               <div className="text-5xl mb-4">🧘</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">No yoga programs found</h3>
-              <p className="text-gray-600 mb-4">Try another filter or add a new program!</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                No yoga programs found
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Try another filter or add a new program!
+              </p>
             </div>
           )}
         </div>
       </section>
 
       <Footer />
+
+      {/* 🔥 Toaster */}
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }

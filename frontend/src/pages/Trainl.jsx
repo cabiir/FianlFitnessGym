@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useUser } from "../contexts/UserContext";
 import { usePrograms } from "../contexts/ProgramsContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 function Trail() {
   const { addProgram } = useUser() || {};
@@ -27,7 +28,9 @@ function Trail() {
   const handleStartTrail = (program) => {
     addProgram?.(program);
     setSelectedPrograms((prev) => [...prev, program.id]);
-    alert(`${program.title} has been added to your dashboard!`);
+
+    // 🔥 Replaced alert with toast
+    toast.success(`${program.title} has been added to your dashboard!`);
   };
 
   const handleGoToDashboard = () => navigate("/dashboard");
@@ -98,9 +101,10 @@ function Trail() {
                   alt={program.title}
                   className="w-full h-56 object-cover transform transition-transform duration-700 hover:scale-110"
                 />
-                
+
                 <div className="absolute top-4 right-4 bg-primaryDarkGreen text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {program.category.charAt(0).toUpperCase() + program.category.slice(1)}
+                  {program.category.charAt(0).toUpperCase() +
+                    program.category.slice(1)}
                 </div>
                 {selectedPrograms.includes(program.id) && (
                   <div className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -110,11 +114,17 @@ function Trail() {
               </div>
 
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{program.title}</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  {program.title}
+                </h3>
                 <p className="text-gray-600 mb-4">{program.description}</p>
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm text-gray-500">{program.duration}</span>
-                  <span className="text-sm text-gray-500">{program.intensity} Intensity</span>
+                  <span className="text-sm text-gray-500">
+                    {program.duration}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {program.intensity} Intensity
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <button
@@ -138,8 +148,12 @@ function Trail() {
           {filteredPrograms.length === 0 && (
             <div className="text-center py-16 animate-fade-in">
               <div className="text-5xl mb-4">😢</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">No programs found</h3>
-              <p className="text-gray-600 mb-4">Try another filter or check back later!</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                No programs found
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Try another filter or check back later!
+              </p>
             </div>
           )}
         </div>
@@ -147,6 +161,8 @@ function Trail() {
 
       <Footer />
 
+      {/* 🔥 Toaster for notifications */}
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }
