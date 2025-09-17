@@ -205,6 +205,15 @@ function Login() {
                     </Link>
                   </p>
                 </div>
+                {/* Admin Link */}
+                  <div className="text-center mt-8">
+                  <p className="text-gray-600">
+                    Admin Sing Here?{' '}
+                    <Link to="/Admin" className="text-primaryDarkGreen font-semibold hover:text-primaryDarkGreen2 transition-colors duration-300">
+                      Admin
+                    </Link>
+                  </p>
+                </div>
 
                 {/* Additional Features */}
                 <div className="mt-8 p-4 bg-gray-50 rounded-xl animate-fade-in-scale">
